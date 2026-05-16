@@ -1,0 +1,16 @@
+{
+  "name": "HTML-Mermaid-Editor",
+  "short_name": "MermaidEdit",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#f9fafb",
+  "background_color": "#f9fafb",
+  "description": "A web-based editor for real-time Mermaid syntax previewing and exporting diagrams as images.",
+  "icons": [
+    {
+      "src": "assets/favicon/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - .:/app
+    environment:
+      - CI=true

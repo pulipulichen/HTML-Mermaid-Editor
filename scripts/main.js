@@ -25,6 +25,22 @@ if (savedCode !== null) {
     input.value = savedCode;
 }
 
+// 若沒有既有內容，從範例檔載入預設 Mermaid 語法
+async function loadDefaultCodeIfEmpty() {
+    if (input.value.trim()) return;
+
+    try {
+        const response = await fetch('./mermaid_example.md');
+        if (!response.ok) {
+            throw new Error(`載入範例失敗：${response.status}`);
+        }
+
+        input.value = await response.text();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 let pzInstance = null;
 
 // 初始化 Panzoom 拖曳與縮放
@@ -244,5 +260,10 @@ input.addEventListener('input', () => {
 });
 
 // 啟動工具
-initPanzoom();
-renderDiagram();
+async function startApp() {
+    initPanzoom();
+    await loadDefaultCodeIfEmpty();
+    renderDiagram();
+}
+
+startApp();

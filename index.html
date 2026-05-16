@@ -32,14 +32,7 @@
                         渲染圖表
                     </button>
                 </div>
-                <textarea id="mermaid-input" class="flex-1 w-full p-4 resize-none focus:outline-none font-mono text-sm text-gray-700 bg-gray-50" placeholder="在此貼上 Mermaid 語法...">graph TD
-    A[使用者] -->|輸入語法| B(編輯器)
-    B --> C{渲染成功?}
-    C -->|是| D[顯示預覽圖表]
-    D --> E[下載 SVG]
-    D --> F[下載透明 PNG]
-    C -->|否| G[顯示錯誤訊息]
-                </textarea>
+                <textarea id="mermaid-input" class="flex-1 w-full p-4 resize-none focus:outline-none font-mono text-sm text-gray-700 bg-gray-50" placeholder="在此貼上 Mermaid 語法..."></textarea>
                 <!-- 錯誤訊息顯示區 -->
                 <div id="error-msg" class="hidden bg-red-50 text-red-600 p-3 text-sm border-t border-red-200 font-mono break-all overflow-y-auto max-h-32">
                 </div>

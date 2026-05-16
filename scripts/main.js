@@ -42,6 +42,9 @@ async function loadDefaultCodeIfEmpty() {
 }
 
 let pzInstance = null;
+let typingTimer = null;
+let isRenderingDiagram = false;
+let renderAgainAfterCurrent = false;
 
 // 初始化 Panzoom 拖曳與縮放
 function initPanzoom() {
@@ -112,8 +115,26 @@ function generateFilename(extension) {
     return `${prefix}_${timestamp}.${extension}`;
 }
 
-// 渲染圖表函數
+// Mermaid 10 的 render 流程會使用暫存 DOM，同時執行多次可能互相干擾。
 async function renderDiagram() {
+    if (isRenderingDiagram) {
+        renderAgainAfterCurrent = true;
+        return;
+    }
+
+    isRenderingDiagram = true;
+    try {
+        do {
+            renderAgainAfterCurrent = false;
+            await renderDiagramOnce();
+        } while (renderAgainAfterCurrent);
+    } finally {
+        isRenderingDiagram = false;
+    }
+}
+
+// 渲染圖表函數
+async function renderDiagramOnce() {
     // 自動過濾掉可能導致 Mermaid 報錯的特殊空白字元 (如 NBSP 不換行空白、零寬字元)
     const code = input.value.replace(/[\u00A0\u200B]/g, ' ').trim();
     if (!code) {
@@ -245,12 +266,14 @@ function downloadPng() {
 }
 
 // 綁定事件監聽器
-btnRender.addEventListener('click', renderDiagram);
+btnRender.addEventListener('click', () => {
+    clearTimeout(typingTimer);
+    renderDiagram();
+});
 btnSvg.addEventListener('click', downloadSvg);
 btnPng.addEventListener('click', downloadPng);
 
 // 支援即時預覽防抖動 (停止輸入 0.5 秒後自動渲染)
-let typingTimer;
 input.addEventListener('input', () => {
     // 自動保存當前語法到 localStorage
     localStorage.setItem('mermaid_code_backup', input.value);

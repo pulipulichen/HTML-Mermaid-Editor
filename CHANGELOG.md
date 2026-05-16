@@ -10,3 +10,5 @@
 - Moved the default Mermaid example loading into the app startup flow so empty editors load sample content from `mermaid_example.md`.
 - Added PWA metadata, a web app manifest, theme color settings, and favicon links for installable browser support.
 - Added Docker-based Playwright end-to-end testing with a GitHub Actions workflow and test artifacts for failed runs.
+- Fixed a Mermaid rendering concurrency issue by serializing render requests and canceling pending debounce renders on manual render clicks.
+- Fixed the Playwright e2e test input to use a real newline in the Mermaid sample (`graph TD\nA-->B`) to prevent parser false failures.

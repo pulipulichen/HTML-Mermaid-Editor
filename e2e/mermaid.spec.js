@@ -15,7 +15,7 @@ test('Render a simple mermaid diagram', async ({ page }) => {
   // 3. Perform actions
   // Fill the textarea with a basic mermaid chart
   const input = page.locator('#mermaid-input');
-  await input.fill('graph TD\\nA-->B');
+  await input.fill('graph TD\nA-->B');
   
   // Click the render button
   await page.locator('#btn-render').click();

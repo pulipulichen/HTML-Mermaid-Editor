@@ -14,3 +14,4 @@
 - Fixed the Playwright e2e test input to use a real newline in the Mermaid sample (`graph TD\nA-->B`) to prevent parser false failures.
 - Reworked the documentation into a bilingual README setup with synchronized `README.md` (English) and `README_zh_tw.md` (Traditional Chinese).
 - Added language switch links to both README files for quick cross-language navigation.
+- Clarified local usage docs in both README files: opening `index.html` directly is unsupported, and running through an HTTP server is required.

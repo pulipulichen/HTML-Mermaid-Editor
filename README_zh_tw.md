@@ -39,9 +39,9 @@ python3 -m http.server 8080
 
 開啟 [http://localhost:8080](http://localhost:8080)。
 
-### 方式 2：直接開啟
+### 方式 2：使用其他 HTTP Server
 
-可直接用瀏覽器開啟 `index.html`。若要確保行為一致（特別是範例檔讀取），仍建議使用 HTTP server。
+不支援直接從檔案系統開啟 `index.html`。請務必透過 HTTP server 啟動，才能正常使用所有功能（包含範例檔讀取）。
 
 ## E2E 測試
 

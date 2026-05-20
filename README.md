@@ -39,9 +39,9 @@ python3 -m http.server 8080
 
 Then open [http://localhost:8080](http://localhost:8080).
 
-### Option 2: Open Directly
+### Option 2: Use Any HTTP Server
 
-You can open `index.html` directly in a browser. For consistent behavior (especially sample file loading), an HTTP server is still recommended.
+Opening `index.html` directly from the file system is not supported. Please run the app through an HTTP server so all features (including sample file loading) work correctly.
 
 ## E2E Testing
 

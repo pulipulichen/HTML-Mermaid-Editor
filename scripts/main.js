@@ -1,4 +1,5 @@
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+import { initI18n, t } from './modules/i18n.js';
 
 // 初始化 Mermaid 配置，強制設定透明背景
 mermaid.initialize({
@@ -32,7 +33,7 @@ async function loadDefaultCodeIfEmpty() {
     try {
         const response = await fetch('./mermaid_example.md');
         if (!response.ok) {
-            throw new Error(`載入範例失敗：${response.status}`);
+            throw new Error(t('errors.loadExampleFailed', { status: response.status }));
         }
 
         input.value = await response.text();
@@ -171,7 +172,7 @@ async function renderDiagramOnce() {
     } catch (err) {
         console.error(err);
         // 顯示錯誤訊息 (發生錯誤時不再清空畫面，保留上一次的圖表，編輯體驗更好)
-        errorMsg.textContent = err.message || '語法錯誤，請檢查您的 Mermaid 語法。';
+        errorMsg.textContent = err.message || t('errors.syntaxInvalid');
         errorMsg.classList.remove('hidden');
         updateButtonState(true);
     } finally {
@@ -258,7 +259,7 @@ function downloadPng() {
     };
 
     img.onerror = function(err) {
-        alert("轉換 PNG 時發生錯誤，請稍後再試。");
+        alert(t('errors.convertPngFailed'));
         console.error(err);
     };
 
@@ -284,6 +285,7 @@ input.addEventListener('input', () => {
 
 // 啟動工具
 async function startApp() {
+    initI18n();
     initPanzoom();
     await loadDefaultCodeIfEmpty();
     renderDiagram();

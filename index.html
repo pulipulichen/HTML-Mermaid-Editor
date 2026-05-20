@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mermaid 渲染與下載工具</title>
+    <title>Mermaid Render and Export Tool</title>
     
     <!-- PWA Settings -->
     <link rel="manifest" href="./manifest.json">
@@ -25,8 +25,12 @@
         <!-- 標題區塊 -->
         <header class="text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">Mermaid 編輯器 & 下載器</h1>
-                <p class="text-sm text-gray-500 mt-1">貼上您的 Mermaid 語法，快速預覽並匯出透明背景的圖片。支援滑鼠滾輪/觸控縮放與拖曳。</p>
+                <h1 class="text-2xl font-bold text-gray-900" data-i18n="header.title">Mermaid Editor & Downloader</h1>
+                <p class="text-sm text-gray-500 mt-1" data-i18n="header.subtitle">Paste Mermaid syntax to preview and export transparent diagrams. Supports drag, mouse-wheel zoom, and touch zoom.</p>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+                <label for="language-select" data-i18n="language.label">Language</label>
+                <select id="language-select" class="bg-white border border-gray-300 rounded-md px-2 py-1 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"></select>
             </div>
         </header>
 
@@ -36,12 +40,12 @@
             <!-- 左側：輸入區 -->
             <div class="flex flex-col h-[600px] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                    <span class="font-medium text-gray-700">Mermaid 語法輸入區</span>
+                    <span class="font-medium text-gray-700" data-i18n="input.title">Mermaid Syntax Input</span>
                     <button id="btn-render" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm">
-                        渲染圖表
+                        <span data-i18n="buttons.render">Render Diagram</span>
                     </button>
                 </div>
-                <textarea id="mermaid-input" class="flex-1 w-full p-4 resize-none focus:outline-none font-mono text-sm text-gray-700 bg-gray-50" placeholder="在此貼上 Mermaid 語法..."></textarea>
+                <textarea id="mermaid-input" class="flex-1 w-full p-4 resize-none focus:outline-none font-mono text-sm text-gray-700 bg-gray-50" data-i18n-placeholder="input.placeholder" placeholder="Paste Mermaid syntax here..."></textarea>
                 <!-- 錯誤訊息顯示區 -->
                 <div id="error-msg" class="hidden bg-red-50 text-red-600 p-3 text-sm border-t border-red-200 font-mono break-all overflow-y-auto max-h-32">
                 </div>
@@ -50,15 +54,15 @@
             <!-- 右側：預覽與下載區 -->
             <div class="flex flex-col h-[600px] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 flex flex-wrap justify-between items-center gap-2">
-                    <span class="font-medium text-gray-700">圖表預覽 (支援拖曳與縮放)</span>
+                    <span class="font-medium text-gray-700" data-i18n="preview.title">Diagram Preview (Drag and Zoom Supported)</span>
                     <div class="flex gap-2">
                         <button id="btn-svg" class="flex items-center gap-1 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 px-3 py-1.5 rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                            下載 SVG
+                            <span data-i18n="buttons.downloadSvg">Download SVG</span>
                         </button>
                         <button id="btn-png" class="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                            下載 PNG
+                            <span data-i18n="buttons.downloadPng">Download PNG</span>
                         </button>
                     </div>
                 </div>
@@ -73,14 +77,14 @@
 
                     <!-- 縮放控制工具列 (右下角懸浮) -->
                     <div class="absolute bottom-4 right-4 z-10 flex gap-1 bg-white/90 p-1.5 rounded-lg shadow-md border border-gray-200 backdrop-blur-sm">
-                        <button id="btn-zoom-in" class="p-1.5 hover:bg-gray-100 rounded-md text-gray-700 transition-colors" title="放大">
+                        <button id="btn-zoom-in" class="p-1.5 hover:bg-gray-100 rounded-md text-gray-700 transition-colors" data-i18n-title="buttons.zoomIn.title" title="Zoom In">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         </button>
-                        <button id="btn-zoom-out" class="p-1.5 hover:bg-gray-100 rounded-md text-gray-700 transition-colors" title="縮小">
+                        <button id="btn-zoom-out" class="p-1.5 hover:bg-gray-100 rounded-md text-gray-700 transition-colors" data-i18n-title="buttons.zoomOut.title" title="Zoom Out">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         </button>
                         <div class="w-px bg-gray-300 my-1 mx-1"></div>
-                        <button id="btn-zoom-reset" class="p-1.5 hover:bg-gray-100 rounded-md text-gray-700 transition-colors" title="重置視角">
+                        <button id="btn-zoom-reset" class="p-1.5 hover:bg-gray-100 rounded-md text-gray-700 transition-colors" data-i18n-title="buttons.zoomReset.title" title="Reset View">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
                         </button>
                     </div>

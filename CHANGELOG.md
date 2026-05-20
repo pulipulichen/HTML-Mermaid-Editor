@@ -1,4 +1,4 @@
-# Changelog
+# CHANGELOG
 
 ## 0.0.1
 
@@ -12,3 +12,5 @@
 - Added Docker-based Playwright end-to-end testing with a GitHub Actions workflow and test artifacts for failed runs.
 - Fixed a Mermaid rendering concurrency issue by serializing render requests and canceling pending debounce renders on manual render clicks.
 - Fixed the Playwright e2e test input to use a real newline in the Mermaid sample (`graph TD\nA-->B`) to prevent parser false failures.
+- Reworked the documentation into a bilingual README setup with synchronized `README.md` (English) and `README_zh_tw.md` (Traditional Chinese).
+- Added language switch links to both README files for quick cross-language navigation.
